@@ -1,9 +1,19 @@
 import React from 'react';
-import routesConfig from './routesConfig';
 import { useRoutes } from 'react-router-dom';
+import routesConfig from './routesConfig';
+import Header from './component/Header';
+import { Provider } from 'react-redux';
+import { getStore } from './store';
+
+const store = getStore();
 
 function App() {
-  return useRoutes(routesConfig);
+  return (
+    <Provider store={store}>
+      <Header />
+      {useRoutes(routesConfig)}
+    </Provider>
+  );
 }
 
 export default App;
