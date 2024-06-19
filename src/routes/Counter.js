@@ -8,7 +8,7 @@ function Counter() {
 
   return (
     <div>
-      <p>{number}</p>
+      <div>{number}</div>
       <button onClick={() => dispatch(actionCreators.add())}>+</button>
     </div>
   );
