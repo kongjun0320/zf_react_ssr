@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import actionCreators from '../store/actionCreators';
+import actionCreators from '../store/actionCreators/counter';
 
 function Counter() {
   const number = useSelector((state) => state.counter.number);

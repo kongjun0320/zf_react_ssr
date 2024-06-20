@@ -12,6 +12,13 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
+        enforce: 'pre',
+        use: {
+          loader: 'source-map-loader',
+        },
+      },
+      {
+        test: /\.js$/,
         use: {
           loader: 'babel-loader',
           options: {
