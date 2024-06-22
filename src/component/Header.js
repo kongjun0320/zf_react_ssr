@@ -13,6 +13,15 @@ function Header() {
       <li style={{ width: '200px', textAlign: 'center' }}>
         <Link to="/user">User</Link>
       </li>
+      <li style={{ width: '200px', textAlign: 'center' }}>
+        <Link to="/login">Login</Link>
+      </li>
+      <li style={{ width: '200px', textAlign: 'center' }}>
+        <Link to="/logout">Logout</Link>
+      </li>
+      <li style={{ width: '200px', textAlign: 'center' }}>
+        <Link to="/profile">Profile</Link>
+      </li>
     </ul>
   );
 }

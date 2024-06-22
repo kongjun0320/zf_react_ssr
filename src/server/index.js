@@ -26,7 +26,7 @@ app.get('*', (req, res) => {
   });
   // 匹配上了
   if (routeMatches) {
-    const store = getServerStore();
+    const { store } = getServerStore(req);
     // 因为我们本次渲染可能会走多个数据加载，进行多次接口调用，可能有些成功了，有些失败了
     // 默认情况下，如果有一个接口失败了，整个应用加载就失败了，所以我们要不管成功还是失败都变成成功
     const loadDataPromises = routeMatches
@@ -36,6 +36,7 @@ app.get('*', (req, res) => {
           (error) => error
         );
       })
+      .concat(App.loadData && App.loadData(store))
       .filter(Boolean);
 
     Promise.all(loadDataPromises).then(() => {
