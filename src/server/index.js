@@ -7,6 +7,7 @@ import StyleContext from 'isomorphic-style-loader-react18/StyleContext';
 import App from '../App';
 import { getServerStore } from '../store';
 import routesConfig from '../routesConfig';
+import { Helmet } from 'react-helmet';
 
 const express = require('express');
 
@@ -54,6 +55,8 @@ app.get('*', (req, res) => {
         });
       };
 
+      const helmet = Helmet.renderStatic();
+
       const html = renderToString(
         <StaticRouter location={req.url}>
           <StyleContext.Provider value={{ insertCss }}>
@@ -73,7 +76,8 @@ app.get('*', (req, res) => {
           <head>
               <meta charset="UTF-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              <title>ssr</title>
+              ${helmet.title.toString()}
+              ${helmet.meta.toString()}
               ${style}
           </head>
           <body>
