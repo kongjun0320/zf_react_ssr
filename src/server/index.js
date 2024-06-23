@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import proxy from 'express-http-proxy';
 import { matchRoutes } from 'react-router-dom';
+import StyleContext from 'isomorphic-style-loader-react18/StyleContext';
 import App from '../App';
 import { getServerStore } from '../store';
 import routesConfig from '../routesConfig';
@@ -45,11 +46,26 @@ app.get('*', (req, res) => {
       } else if (routeMatches[routeMatches.length - 1].route.path === '*') {
         res.statusCode = 404;
       }
+
+      const css = new Set();
+      const insertCss = (...styles) => {
+        styles.forEach((style) => {
+          css.add(style._getCss());
+        });
+      };
+
       const html = renderToString(
         <StaticRouter location={req.url}>
-          <App store={store} />
+          <StyleContext.Provider value={{ insertCss }}>
+            <App store={store} />
+          </StyleContext.Provider>
         </StaticRouter>
       );
+
+      let style = '';
+      if (css.size > 0) {
+        style = `\n<style>${[...css].join('')}</style>`;
+      }
 
       res.send(`
       <!DOCTYPE html>
@@ -58,6 +74,7 @@ app.get('*', (req, res) => {
               <meta charset="UTF-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <title>ssr</title>
+              ${style}
           </head>
           <body>
               <div id="root">${html}</div>
