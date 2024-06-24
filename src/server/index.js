@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToString, renderToPipeableStream } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import proxy from 'express-http-proxy';
 import { matchRoutes } from 'react-router-dom';
@@ -31,6 +31,7 @@ app.get('*', (req, res) => {
     const { store } = getServerStore(req);
     // 因为我们本次渲染可能会走多个数据加载，进行多次接口调用，可能有些成功了，有些失败了
     // 默认情况下，如果有一个接口失败了，整个应用加载就失败了，所以我们要不管成功还是失败都变成成功
+    // const loadDataPromises = [];
     const loadDataPromises = routeMatches
       .map((match) => {
         return match.route.element.type.loadData?.(store).then(
@@ -57,38 +58,75 @@ app.get('*', (req, res) => {
 
       const helmet = Helmet.renderStatic();
 
-      const html = renderToString(
+      // const html = renderToString(
+      //   <StaticRouter location={req.url}>
+      //     <StyleContext.Provider value={{ insertCss }}>
+      //       <App store={store} />
+      //     </StyleContext.Provider>
+      //   </StaticRouter>
+      // );
+      const { pipe } = renderToPipeableStream(
         <StaticRouter location={req.url}>
           <StyleContext.Provider value={{ insertCss }}>
             <App store={store} />
           </StyleContext.Provider>
-        </StaticRouter>
+        </StaticRouter>,
+        {
+          // bootstrapScripts: ['/client.js'],
+          onShellReady() {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html;charset=utf8');
+
+            let style = '';
+            if (css.size > 0) {
+              style = `\n<style>${[...css].join('')}</style>`;
+            }
+
+            res.write(` <!DOCTYPE html>
+                            <html lang="en">
+                                <head>
+                                    <meta charset="UTF-8" />
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                    ${helmet.title.toString()}
+                                    ${helmet.meta.toString()}
+                                    ${style}
+                                </head>
+                                <body>
+                                    <div id="root">`);
+            pipe(res);
+            res.write(`</div>
+                              <script>
+                                var context = { state: ${JSON.stringify(
+                                  store.getState()
+                                )} }
+                              </script>
+                              <script src="/client.js"></script>
+                              </body>
+                            </html>
+                    `);
+          },
+        }
       );
 
-      let style = '';
-      if (css.size > 0) {
-        style = `\n<style>${[...css].join('')}</style>`;
-      }
-
-      res.send(`
-      <!DOCTYPE html>
-      <html lang="en">
-          <head>
-              <meta charset="UTF-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              ${helmet.title.toString()}
-              ${helmet.meta.toString()}
-              ${style}
-          </head>
-          <body>
-              <div id="root">${html}</div>
-              <script>
-                var context = { state: ${JSON.stringify(store.getState())} }
-              </script>
-              <script src="/client.js"></script>
-          </body>
-      </html>
-      `);
+      // res.send(`
+      // <!DOCTYPE html>
+      // <html lang="en">
+      //     <head>
+      //         <meta charset="UTF-8" />
+      //         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      //         ${helmet.title.toString()}
+      //         ${helmet.meta.toString()}
+      //         ${style}
+      //     </head>
+      //     <body>
+      //         <div id="root">${html}</div>
+      //         <script>
+      //           var context = { state: ${JSON.stringify(store.getState())} }
+      //         </script>
+      //         <script src="/client.js"></script>
+      //     </body>
+      // </html>
+      // `);
     });
   } else {
     res.sendStatus(404);

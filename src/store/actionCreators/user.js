@@ -11,6 +11,7 @@ const actionCreators = {
             type: SET_USER_LIST,
             payload: data,
           });
+          return getState().user.list;
         })
         .catch((error) => {
           console.log('error >>> ', error);

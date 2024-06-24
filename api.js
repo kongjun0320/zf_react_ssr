@@ -15,23 +15,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/api/users', (req, res) => {
-  res.json({
-    success: true,
-    data: [
-      {
-        id: 1,
-        name: 'jack',
-      },
-      {
-        id: 2,
-        name: 'tom',
-      },
-      {
-        id: 3,
-        name: 'mike',
-      },
-    ],
-  });
+  setTimeout(() => {
+    res.json({
+      success: true,
+      data: [
+        {
+          id: 1,
+          name: 'jack',
+        },
+        {
+          id: 2,
+          name: 'tom',
+        },
+        {
+          id: 3,
+          name: 'mike',
+        },
+      ],
+    });
+  }, 5000);
 });
 
 app.post('/api/login', (req, res) => {
