@@ -15,11 +15,13 @@ const insertCss = (...styles) => {
   return () => removeCSS.forEach((dispose) => dispose());
 };
 
-hydrateRoot(
-  root,
-  <Router history={history}>
-    <StyleContext.Provider value={{ insertCss }}>
-      <App store={store} />
-    </StyleContext.Provider>
-  </Router>
-);
+hydrateRoot(root, <App />);
+
+// hydrateRoot(
+//   root,
+//   <Router history={history}>
+//     <StyleContext.Provider value={{ insertCss }}>
+//       <App store={store} />
+//     </StyleContext.Provider>
+//   </Router>
+// );
