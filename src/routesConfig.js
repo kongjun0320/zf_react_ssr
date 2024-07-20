@@ -19,36 +19,36 @@ export default [
     path: '/counter',
     element: <Counter />,
   },
-  {
-    path: '/user',
-    element: <User />,
-    children: [
-      {
-        path: '/user/add',
-        element: <UserAdd />,
-      },
-      {
-        path: '/user/list',
-        element: <UserList />,
-        // 没有别的路由会匹配这个路由
-        index: true,
-      },
-    ],
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/logout',
-    element: <Logout />,
-  },
-  {
-    path: '/profile',
-    element: <Profile />,
-  },
-  {
-    path: '*',
-    element: <NotFound />,
-  },
+  // {
+  //   path: '/user',
+  //   element: <User />,
+  //   children: [
+  //     {
+  //       path: '/user/add',
+  //       element: <UserAdd />,
+  //     },
+  //     {
+  //       path: '/user/list',
+  //       element: <UserList />,
+  //       // 没有别的路由会匹配这个路由
+  //       index: true,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/login',
+  //   element: <Login />,
+  // },
+  // {
+  //   path: '/logout',
+  //   element: <Logout />,
+  // },
+  // {
+  //   path: '/profile',
+  //   element: <Profile />,
+  // },
+  // {
+  //   path: '*',
+  //   element: <NotFound />,
+  // },
 ];

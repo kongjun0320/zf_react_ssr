@@ -8,19 +8,23 @@ import actionCreators from './store/actionCreators/auth';
 
 import styles from './App.css';
 
-function App({ store }) {
-  useStyles(styles);
-  return (
-    <Provider store={store}>
-      <Header />
-      {useRoutes(routesConfig)}
-      <footer className={styles.theme}>this is footer</footer>
-    </Provider>
-  );
-}
+// function App({ store }) {
+//   useStyles(styles);
+//   return (
+//     <Provider store={store}>
+//       <Header />
+//       {useRoutes(routesConfig)}
+//       <footer className={styles.theme}>this is footer</footer>
+//     </Provider>
+//   );
+// }
 
-App.loadData = (store) => {
-  return store.dispatch(actionCreators.validate());
-};
+// App.loadData = (store) => {
+//   return store.dispatch(actionCreators.validate());
+// };
+
+function App() {
+  return useRoutes(routesConfig);
+}
 
 export default App;

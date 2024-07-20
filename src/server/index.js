@@ -24,8 +24,12 @@ app.use(
 );
 
 app.get('*', (req, res) => {
-  const html = renderToString(<Counter />);
-  console.log('html >>> ', html);
+  const html = renderToString(
+    <StaticRouter>
+      <App />
+    </StaticRouter>
+  );
+
   res.send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -35,6 +39,7 @@ app.get('*', (req, res) => {
           </head>
           <body>
               <div id="root">${html}</div>
+              <script src="/client.js"></script>
           </body>
       </html>
       `);
