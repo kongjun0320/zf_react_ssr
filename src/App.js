@@ -7,6 +7,7 @@ import useStyles from 'isomorphic-style-loader-react18/useStyles';
 import actionCreators from './store/actionCreators/auth';
 
 import styles from './App.css';
+import { getStore } from './store';
 
 // function App({ store }) {
 //   useStyles(styles);
@@ -24,7 +25,13 @@ import styles from './App.css';
 // };
 
 function App() {
-  return useRoutes(routesConfig);
+  const store = getStore();
+  return (
+    <Provider store={store}>
+      <Header />
+      {useRoutes(routesConfig)}
+    </Provider>
+  );
 }
 
 export default App;
