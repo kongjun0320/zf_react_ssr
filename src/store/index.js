@@ -69,6 +69,7 @@ import auth from './reducers/auth';
 export function getStore() {
   const reducers = {
     counter,
+    user,
   };
   const combinedReducer = combineReducers(reducers);
   const store = applyMiddleware(thunk, promise, logger)(createStore)(

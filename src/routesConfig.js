@@ -19,22 +19,22 @@ export default [
     path: '/counter',
     element: <Counter />,
   },
-  // {
-  //   path: '/user',
-  //   element: <User />,
-  //   children: [
-  //     {
-  //       path: '/user/add',
-  //       element: <UserAdd />,
-  //     },
-  //     {
-  //       path: '/user/list',
-  //       element: <UserList />,
-  //       // 没有别的路由会匹配这个路由
-  //       index: true,
-  //     },
-  //   ],
-  // },
+  {
+    path: '/user',
+    element: <User />,
+    children: [
+      {
+        path: '/user/add',
+        element: <UserAdd />,
+      },
+      {
+        path: '/user/list',
+        element: <UserList />,
+        // 没有别的路由会匹配这个路由
+        index: true,
+      },
+    ],
+  },
   // {
   //   path: '/login',
   //   element: <Login />,

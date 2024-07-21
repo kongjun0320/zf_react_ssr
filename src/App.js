@@ -24,8 +24,9 @@ import { getStore } from './store';
 //   return store.dispatch(actionCreators.validate());
 // };
 
+const store = getStore();
+
 function App() {
-  const store = getStore();
   return (
     <Provider store={store}>
       <Header />
