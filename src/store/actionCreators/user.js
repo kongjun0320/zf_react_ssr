@@ -1,29 +1,20 @@
-import axios from 'axios';
 import { ADD_USER, SET_USER_LIST } from '../action-types';
 
 const actionCreators = {
   getUserList() {
     return function (dispatch, getState, request) {
-      axios.get('http://localhost:3333/api/users').then((response) => {
-        const { data } = response.data;
-        dispatch({
-          type: SET_USER_LIST,
-          payload: data,
+      return request
+        .get('/api/users')
+        .then((response) => {
+          const { data } = response.data;
+          dispatch({
+            type: SET_USER_LIST,
+            payload: data,
+          });
+        })
+        .catch((error) => {
+          console.log('error >>> ', error);
         });
-      });
-      // return request
-      //   .get('/api/users')
-      //   .then((response) => {
-      //     const { data } = response.data;
-      //     dispatch({
-      //       type: SET_USER_LIST,
-      //       payload: data,
-      //     });
-      //     return getState().user.list;
-      //   })
-      //   .catch((error) => {
-      //     console.log('error >>> ', error);
-      //   });
     };
   },
   addUser(user) {

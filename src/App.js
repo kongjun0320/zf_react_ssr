@@ -3,30 +3,8 @@ import { useRoutes } from 'react-router-dom';
 import routesConfig from './routesConfig';
 import Header from './component/Header';
 import { Provider } from 'react-redux';
-import useStyles from 'isomorphic-style-loader-react18/useStyles';
-import actionCreators from './store/actionCreators/auth';
 
-import styles from './App.css';
-import { getStore } from './store';
-
-// function App({ store }) {
-//   useStyles(styles);
-//   return (
-//     <Provider store={store}>
-//       <Header />
-//       {useRoutes(routesConfig)}
-//       <footer className={styles.theme}>this is footer</footer>
-//     </Provider>
-//   );
-// }
-
-// App.loadData = (store) => {
-//   return store.dispatch(actionCreators.validate());
-// };
-
-const store = getStore();
-
-function App() {
+function App({ store }) {
   return (
     <Provider store={store}>
       <Header />
