@@ -35,20 +35,20 @@ export default [
       },
     ],
   },
-  // {
-  //   path: '/login',
-  //   element: <Login />,
-  // },
-  // {
-  //   path: '/logout',
-  //   element: <Logout />,
-  // },
-  // {
-  //   path: '/profile',
-  //   element: <Profile />,
-  // },
-  // {
-  //   path: '*',
-  //   element: <NotFound />,
-  // },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/logout',
+    element: <Logout />,
+  },
+  {
+    path: '/profile',
+    element: <Profile />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
 ];

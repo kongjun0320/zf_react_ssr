@@ -26,7 +26,7 @@ app.get('*', (req, res) => {
   });
 
   if (routeMatches) {
-    const store = getServerStore();
+    const { store } = getServerStore(req);
 
     const loadDataPromises = routeMatches
       .map((match) => {
@@ -38,6 +38,7 @@ app.get('*', (req, res) => {
           )
         );
       })
+      .concat(App.loadData?.(store))
       .filter(Boolean);
 
     Promise.all(loadDataPromises).then(() => {

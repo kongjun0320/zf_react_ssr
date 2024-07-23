@@ -1,16 +1,16 @@
 import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { getClientStore } from '../store';
 import App from '../App';
 
 const root = document.getElementById('root');
 
-const store = getClientStore();
+const { store, history } = getClientStore();
 
 hydrateRoot(
   root,
-  <BrowserRouter>
+  <Router history={history}>
     <App store={store} />
-  </BrowserRouter>
+  </Router>
 );
