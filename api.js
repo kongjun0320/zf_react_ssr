@@ -33,7 +33,7 @@ app.get('/api/users', (req, res) => {
         },
       ],
     });
-  }, 0);
+  }, 1000);
 });
 
 app.post('/api/login', (req, res) => {

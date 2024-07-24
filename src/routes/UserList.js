@@ -1,33 +1,54 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import React, { Suspense, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+// import Users from '../component/Users';
 import actionCreators from '../store/actionCreators/user';
+
+const LazyUsers = React.lazy(() => import('../component/Users'));
 
 function UserList() {
   const dispatch = useDispatch();
+  const resourceRef = useRef();
 
-  const list = useSelector((state) => state.user.list);
-
-  useEffect(() => {
-    if (list.length === 0) {
-      dispatch(actionCreators.getUserList());
-    }
-  });
-
+  if (!resourceRef.current) {
+    const promise = dispatch(actionCreators.getUserList());
+    const resource = wrapPromise(promise);
+    resourceRef.current = resource;
+  }
   return (
     <>
-      <ul>
-        {list.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
+      <div>User 上</div>
+      <Suspense fallback={<h1>loading...</h1>}>
+        <LazyUsers resource={resourceRef.current} />
+      </Suspense>
+      <div>User 下</div>
     </>
   );
 }
 
-UserList.loadData = (store) => {
-  // 等此 promise 完成后仓库就有数据了，就可以用仓库的数据渲染带真实数据的的组件 HTML 了，再发给客户端
-  return store.dispatch(actionCreators.getUserList());
-};
+function wrapPromise(promise) {
+  let status = 'pending';
+  let result;
+  let suspender = promise.then(
+    (r) => {
+      status = 'success';
+      result = r;
+    },
+    (e) => {
+      status = 'error';
+      result = e;
+    }
+  );
+  return {
+    read() {
+      if (status === 'pending') {
+        throw suspender;
+      } else if (status === 'error') {
+        throw result;
+      } else if (status === 'success') {
+        return result;
+      }
+    },
+  };
+}
 
 export default UserList;
