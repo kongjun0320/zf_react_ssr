@@ -76,8 +76,7 @@ app.get('*', (req, res) => {
               styles = `\n<style>${[...css].join('')}</style>`;
             }
 
-            res.write(`
-<!DOCTYPE html>
+            res.write(`<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -87,18 +86,15 @@ app.get('*', (req, res) => {
     ${styles}
   </head>
   <body>
-    <div id="root">
-              `);
+    <div id="root">`);
             pipe(res);
-            res.write(`
-    </div>
+            res.write(`</div>
     <script>
       window.context = { state: ${JSON.stringify(store.getState())} }
     </script>
-    <script src="/client.js"></script>
+    <script async src="/client.js"></script>
   </body>
-</html>
-              `);
+</html>`);
           },
         }
       );
